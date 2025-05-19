@@ -1,0 +1,11 @@
+Side
+<mat-sidenav  class="sidenav">
+        <mat-toolbar>Budget</mat-toolbar>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/dashboard" [ngClass]="{'active-link': routerpath === 'dashboard'}">Dashboard</a>
+          <a mat-list-item routerLink="/profile">Profile</a>
+          <a mat-list-item (click)="logout()">Logout</a>
+        </mat-nav-list>
+        <mat-list>
+</mat-list>
+      </mat-sidenav>

@@ -1,0 +1,52 @@
+<!-- Filter Dropdown -->
+ <div class="filter-container">
+<mat-form-field appearance="outline">
+  <mat-label>Filter By</mat-label>
+  <mat-select [(value)]="selectedOption" (selectionChange)="onFilterChange($event.value)">
+    <mat-option *ngFor="let option of filterOptions" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Custom Month Picker (only when 'Custom' is selected) -->
+<mat-form-field *ngIf="selectedOption === 'Custom'" appearance="outline">
+  <mat-label>Month and Year</mat-label>
+  <input matInput [matDatepicker]="dp" [formControl]="date">
+  <mat-hint>MM/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-datepicker #dp
+                  startView="multi-year"
+                  (monthSelected)="setMonthAndYear($event, dp)"
+                  panelClass="example-month-picker">
+  </mat-datepicker>
+</mat-form-field>
+ </div>
+<div class="chart-container">
+  <mat-grid-list cols="2" rowHeight="2:1">
+     <mat-grid-tile style="background: rgb(253, 253, 253);padding: 5px;border-radius: 4px;">
+      <ngx-charts-bar-vertical
+        [view]="view"
+        [results]="single"
+        [legend]="showLegend"
+        [animations]="animations"
+      >
+     </ngx-charts-bar-vertical>
+  </mat-grid-tile>
+  <mat-grid-tile style="background: rgb(253, 253, 253);padding: 5px;border-radius: 4px;">
+      <ngx-charts-bar-horizontal
+        [view]="view"
+        [results]="single"
+        [legend]="showLegend"
+        [animations]="animations"
+      >
+     </ngx-charts-bar-horizontal>
+  </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+
+
+
+
+

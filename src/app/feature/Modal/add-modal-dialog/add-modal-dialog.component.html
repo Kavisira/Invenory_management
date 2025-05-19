@@ -1,0 +1,29 @@
+<div class="add-modal-dialog">  
+  <h2 mat-dialog-title>Add Data</h2>
+  <mat-dialog-content>
+    <form [formGroup]="addDataform" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Category Name</mat-label>
+        <input matInput formControlName="category" required>
+        <mat-error *ngIf="addDataform.get('category')?.hasError('required')">category is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category Type</mat-label>
+        <input matInput formControlName="type" required>
+        <mat-error *ngIf="addDataform.get('type')?.hasError('required')">type is required</mat-error>
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Add</button>
+        <button mat-button  mat-dialog-close>Cancel</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+</div>

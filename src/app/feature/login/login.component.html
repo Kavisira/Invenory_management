@@ -1,0 +1,32 @@
+<div class="login-container">
+<div class="login-form">
+  <h2>Login</h2>
+  <form class="form">
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Username</mat-label>
+    <input type="text" matInput [formControl]="usernameFormControl" [errorStateMatcher]="matcher"
+           placeholder="Enter your email">
+    @if (usernameFormControl.hasError('required')) {
+      <mat-error>Username is <strong>required</strong></mat-error>
+    }
+  </mat-form-field>
+    <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher"
+           placeholder="Enter your password">
+    @if (passwordFormControl.hasError('email') && !passwordFormControl.hasError('required')) {
+      <mat-error>Please enter a Password</mat-error>
+    }
+    @if (passwordFormControl.hasError('required')) {
+      <mat-error>Password is <strong>required</strong></mat-error>
+    }
+    
+  </mat-form-field>
+@if (errorMessage){
+          <mat-error  class="error-message">{{ errorMessage }}</mat-error>
+    }
+  <div class="form-field">
+    <button mat-raised-button color="primary" (click)="login()" [disabled]="!usernameFormControl.valid || !passwordFormControl.valid">Login</button>
+    </div>
+</form>
+</div>
