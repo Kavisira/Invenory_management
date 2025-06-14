@@ -1,38 +1,6 @@
 ::ng-deep .month-picker .mat-calendar-period-button {
   pointer-events: none;
 }
-.filter-container {
-  position: fixed;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  width: 100%;
-   mat-form-field + mat-form-field {
-  margin-left: 8px;
-  z-index: 900;
-}
-.account-status {
-  text-align: center;
-  mat-icon {
-    font-size: 3rem;
-    height: auto !important;
-    width: auto !important;
-  } & .surplus {
-    color: #16c60c !important;
-  } & .stable {
-    color: #0078d7 !important;
-  } & .even {
-    color: #999100 !important;
-  } & .over {
-    color: #f7630c !important;
-  } & .critical {
-    color: #e81224 !important;
-  }
-
-}
-}
 .dashboard-container {
   z-index: 800;
   margin-top: 80px;
