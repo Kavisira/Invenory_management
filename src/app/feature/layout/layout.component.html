@@ -1,21 +1,79 @@
 <mat-sidenav-container class="sidenav-container" container-shape="none">
       <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="sidenav">
-        <mat-toolbar>Menu</mat-toolbar>
+        <mat-toolbar class="logo-menu">Menu</mat-toolbar>
         <mat-list role="list">
-  <mat-list-item *ngFor="let item of menuItems" role="listitem" [routerLink]='item.path' [ngClass]="{'active-link': matchRoute(item.match)}">{{item.name}}</mat-list-item>
+  <mat-list-item *ngFor="let item of menuItems" role="listitem" [routerLink]='item.path' [ngClass]="{'active-link': matchRoute(item.match)}">
+    {{item.name}}       
+    <mat-icon matListItemIcon [ngStyle]="{color: matchRoute(item.match)? '#b66dff':'#bba8bff5'
+    }">{{item.icon}}</mat-icon>
+</mat-list-item>
 </mat-list>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <mat-toolbar color="primary">
+        <mat-toolbar color="primary" class="top-menu">
           <button mat-icon-button (click)="opened = !opened">
-            <mat-icon>menu</mat-icon>
+            <mat-icon style="color: #b66dff;">menu</mat-icon>
           </button>
           <span>My App</span>
         </mat-toolbar>
+ <div class="filter-container">
+  <div class="filter-fields">
+    <mat-form-field appearance="outline">
+  <mat-label>Filter By</mat-label>
+  <mat-select [(value)]="selectedOption" (selectionChange)="onFilterChange($event.value)">
+    <mat-option *ngFor="let option of filterOptions" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
+<!-- Custom Month Picker (only when 'Custom' is selected) -->
+<mat-form-field *ngIf="selectedOption === 'Custom'" appearance="outline">
+  <mat-label>Month and Year</mat-label>
+  <input matInput [matDatepicker]="dp" [formControl]="date">
+  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-datepicker #dp
+                  startView="multi-year"
+                  (monthSelected)="setMonthAndYear($event, dp)"
+                  panelClass="example-month-picker">
+  </mat-datepicker>
+</mat-form-field>
+  </div>
+<div class="account-status">
+  <mat-icon *ngIf="false" class="surplus"> sentiment_very_satisfied</mat-icon>
+  <mat-icon *ngIf="false" class="stable"> sentiment_satisfied</mat-icon>
+  <mat-icon *ngIf="false" class="even"> sentiment_neutral</mat-icon>
+  <mat-icon *ngIf="false" class="over"> sentiment_dissatisfied</mat-icon>
+  <mat-icon *ngIf="true" class="critical"> sentiment_very_dissatisfied</mat-icon>
+  <div style="display: flex;flex-direction: row;">
+    <div>
+      
+    <mat-icon (keyUp)="openPopup()" (click)="openPopup()" style="font-size: 1.5rem; color: rgb(0, 34, 255);cursor: pointer;">info</mat-icon>
+    </div>
+    <div>
+  <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align">Account Status</div>
+
+    </div>
+  </div>
+</div>
+ </div>
         <div class="content">
           <router-outlet></router-outlet>
         </div>
+            <mat-toolbar class="bottom-nav" color="primary">
+  <button mat-button class="nav-item" routerLink="/home">
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </button>
+  <button mat-button class="nav-item" routerLink="/search">
+    <mat-icon>search</mat-icon>
+    <span>Search</span>
+  </button>
+  <button mat-button class="nav-item" routerLink="/profile">
+    <mat-icon>person</mat-icon>
+    <span>Profile</span>
+  </button>
+</mat-toolbar>
       </mat-sidenav-content>
     </mat-sidenav-container>

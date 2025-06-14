@@ -4,37 +4,52 @@
 
   .sidenav {
     width: 220px;
-    background: #2f4050;
-    color: white;
+    background: #ffffff;
+    color: #3e4b5b;
+    font-family: "ubuntu-regular", sans-serif;
   }
 
   .mat-toolbar {
-    background: #f9f9fb;
-    color:  black;
+    background: white;
+    color:  #3e4b5b;
     position: sticky;
     top: 0;
     z-index: 1;
     border-bottom: 1px solid #e0e0e0;
   }
+  .logo-menu {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    color: #b66dff;
+  }
+  .top-menu {
+    background: white;
+    color: #b66dff;
+  }
 
 ::ng-deep mat-list {
+   display: flex;
+    flex-direction: row-reverse; 
+    justify-content: space-between;
   mat-list-item {
+    align-items: center;
     cursor: pointer !important; 
     .mdc-list-item__primary-text {
-      color: gray !important;
+      color: #3e4b5b !important;
     }
   }
 }
    ::ng-deep mat-list-item:hover {
-    background-color: #171f26 !important;
+    background-color: #fcfcfc !important;
     .mdc-list-item__primary-text {
-      color: rgb(255, 255, 255) !important;
-    }
+ color: #3e4b5b !important;    }
 }
 ::ng-deep .active-link {
-  background-color: #171f26 !important;
   .mdc-list-item__primary-text {
-    color: rgb(255, 255, 255) !important;
+       color: #b66dff !important;
+    font-family: "ubuntu-medium", sans-serif;
   }
 }
   .content {
@@ -50,3 +65,91 @@
     .mat-drawer {
       border-radius: 0 !important;
     }
+    ::ng-deep mat-sidenav-content{
+      background: #f2edf3;
+      color: black;
+    }
+    .bottom-nav {
+      visibility: hidden !important;
+    }
+    .filter-container {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  width: 100%;
+   mat-form-field + mat-form-field {
+  margin-left: 8px;
+  z-index: 900;
+}
+.account-status {
+  text-align: center;
+  mat-icon {
+    font-size: 3rem;
+    height: auto !important;
+    width: auto !important;
+  } & .surplus {
+    color: #16c60c !important;
+  } & .stable {
+    color: #0078d7 !important;
+  } & .even {
+    color: #999100 !important;
+  } & .over {
+    color: #f7630c !important;
+  } & .critical {
+    color: #e81224 !important;
+  }
+
+}
+}
+    /* Media Query for Mobile */
+@media (max-width: 600px) {
+  .filter-container {
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    background-color: white !important;
+    z-index: 900 !important;
+    mat-form-field + mat-form-field {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 8px;
+    }
+    .mat-mdc-form-field {
+      width: 100%;
+    }
+  }
+ .top-menu {
+    display: none;
+  }
+  .sidenav {
+    display: none;
+  }
+  .logo-menu {
+    display: none;
+  }
+ /* footer.component.css */
+.bottom-nav {
+  visibility: visible !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: space-around;
+  height: 56px;
+  z-index: 1000;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: white;
+}
+
+mat-icon {
+  font-size: 24px;
+}
+
+}

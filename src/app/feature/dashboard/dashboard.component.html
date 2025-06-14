@@ -1,49 +1,87 @@
 <!-- Filter Dropdown -->
- <div class="filter-container">
-<mat-form-field appearance="outline">
-  <mat-label>Filter By</mat-label>
-  <mat-select [(value)]="selectedOption" (selectionChange)="onFilterChange($event.value)">
-    <mat-option *ngFor="let option of filterOptions" [value]="option">
-      {{ option }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<!-- Custom Month Picker (only when 'Custom' is selected) -->
-<mat-form-field *ngIf="selectedOption === 'Custom'" appearance="outline">
-  <mat-label>Month and Year</mat-label>
-  <input matInput [matDatepicker]="dp" [formControl]="date">
-  <mat-hint>MM/YYYY</mat-hint>
-  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-  <mat-datepicker #dp
-                  startView="multi-year"
-                  (monthSelected)="setMonthAndYear($event, dp)"
-                  panelClass="example-month-picker">
-  </mat-datepicker>
-</mat-form-field>
+ <div class="dashboard-container">
+  <div class="card-container">
+    <div class="card income-card">
+     <div class="title">Income</div>
+     <div class="amount">150000</div>
+     <div class="income-svg"></div>
+    </div>
+    <div class="card expense-card">
+     <div class="title">Expenses</div>
+     <div class="amount">75000</div>
+     <div class="exp-svg"></div>
+    </div>
+    <div class="card mandatory-card">
+     <div class="title">debts</div>
+     <div class="amount">50000</div>
+     <div class="mand-svg"></div>
+    </div>
+    <div class="card useless-card">
+     <div class="title">Investment</div>
+     <div class="amount">25000</div>
+     <div class="useless-svg"></div>
+    </div>
+    <div class="card saving-card">
+     <div class="title">Savings</div>
+     <div class="amount">75000</div>
+     <div class="save-svg"></div>
+    </div>
  </div>
-<div class="chart-container">
-  <mat-grid-list cols="2" rowHeight="2:1">
-     <mat-grid-tile style="background: rgb(253, 253, 253);padding: 5px;border-radius: 4px;">
-      <ngx-charts-bar-vertical
-        [view]="view"
-        [results]="single"
-        [legend]="showLegend"
-        [animations]="animations"
-      >
-     </ngx-charts-bar-vertical>
-  </mat-grid-tile>
-  <mat-grid-tile style="background: rgb(253, 253, 253);padding: 5px;border-radius: 4px;">
-      <ngx-charts-bar-horizontal
-        [view]="view"
-        [results]="single"
-        [legend]="showLegend"
-        [animations]="animations"
-      >
-     </ngx-charts-bar-horizontal>
-  </mat-grid-tile>
-  </mat-grid-list>
-</div>
+ <div class="second-container">
+  <div class="card first-card">
+    <div #chartContainer style="width: 100%; height: 100%; overflow: auto !important;">
+      <ngx-charts-pie-chart
+[view]="[chartWidth, chartHeight]"  
+[scheme]="colorScheme"
+  [results]="pieChartData"
+  [gradient]="gradient"
+  [legend]="false"
+  [labels]="showLabels"
+  [doughnut]="isDoughnut"
+  (select)="onSelectChartType($event)"
+  >
+</ngx-charts-pie-chart>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    </div>
+  </div>
+  <div class="card second-card">
+    <div #chartContainer style="width: 100%; height: 100%; overflow: auto !important;">
+       <ngx-charts-bar-vertical
+    [view]="[chartWidth, chartHeight]"
+  [scheme]="colorScheme"
+  [results]="single"
+  [gradient]="gradient"
+  [xAxis]="showXAxis"
+  [yAxis]="showYAxis"
+  [legend]="showLegend"
+  [showXAxisLabel]="showXAxisLabel"
+  [showYAxisLabel]="showYAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+  [yAxisLabel]="yAxisLabel"
+  (select)="onSelect($event)">
+</ngx-charts-bar-vertical>
+    </div>
+ </div>
+ </div>
+  <div class="third-container">
+  <div class="card">
+    <h2>Income</h2>
+    <h3>Sub Title</h3>
+  </div>
+  <div class="card">
+    <h2>Expenses</h2>
+    <h3>Sub Title</h3>
+ </div>
+ <div class="card">
+    <h2>Expenses</h2>
+    <h3>Sub Title</h3>
+ </div>
+ </div>
+ </div>
+ <div class="addBtn">
+  <button mat-fab color="primary" (click)="openAddTransactionPopup()">
+    <mat-icon>add</mat-icon>
+  </button>
+ </div>
 
 
 

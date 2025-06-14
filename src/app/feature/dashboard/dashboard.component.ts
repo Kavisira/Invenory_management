@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BarVerticalComponent, NgxChartsModule } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,81 +9,146 @@ import { MatDatepicker, MatDatepickerInput, MatDatepickerModule, MatDatepickerTo
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
-
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment, Moment} from 'moment';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { default as _rollupMoment, Moment } from 'moment';
+import { MatIconModule } from '@angular/material/icon';
 const moment = _rollupMoment || _moment;
+import { ModelContentComponent } from './model-content/model-content.component';
+import { StatusModalComponent } from './status-modal/status-modal.component';
+import { MatButtonModule } from '@angular/material/button';
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'MMMM YYYY',
-  },
-  display: {
-    dateInput: 'MMMM YYYY',        // Input box shows "May 2025"
-    monthYearLabel: 'MMMM YYYY',   // Dropdown label
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+
 @Component({
   selector: 'app-dashboard-component',
   standalone: true,
-  imports: [ 
+  imports: [
     NgxChartsModule,
     MatCardModule,
     MatGridListModule,
     CommonModule,
-    MatFormFieldModule, 
-    MatSelectModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
-   MatNativeDateModule,
-   MatInputModule,
-  MatDatepickerInput ,MatDatepickerToggle  ],
+    MatNativeDateModule,
+    MatInputModule,
+    MatIconModule, MatDialogModule,MatButtonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  providers: [   provideMomentDateAdapter(MY_FORMATS),]
+  providers: []
 })
 export class DashboardComponent {
-  view: [number, number] = [500, 200];
+  readonly dialog = inject(MatDialog);
   filterOptions = ['All', '', '', 'Custom'];
   selectedOption: string = 'All';
-   monthControl = new FormControl<Date | null>(null);
+  monthControl = new FormControl<Date | null>(null);
   today = new Date();
 
   customMonth: Date | null = null;
-
-  // Sample data
-  single = [
+  single: any[] = [
     {
-      name: 'Income',
-      value: 894000,
+      "name": "Food",
+      "value": 500
     },
     {
-      name: 'Overall Expenses',
-      value: 800000,
+      "name": "Entertainment",
+      "value": 600
     },
     {
-      name: 'Savings',
-      value: 94000,
+      "name": "Debts",
+      "value": 7200
     },
+    {
+      "name": "Housing",
+      "value": 300
+    },
+    {
+      "name": "Transportation",
+      "value": 100
+    },
+    {
+      "name": "Health",
+      "value": 250
+    },
+    {
+      "name": "Clothing",
+      "value": 700
+    },
+    {
+      "name": "Education",
+      "value": 500
+    }
   ];
+  pieChartData: any[] = [
+    {
+      "name": "Expenses",
+      "value": 500
+    },
+    {
+      "name": "Debts",
+      "value": 600
+    },
+    {
+      "name": "Savings",
+      "value": 7200
+    },
+    {
+      "name": "Investments",
+      "value": 300
+    }
+  ];
+  multi: any[] = [];
 
-  constructor() {
-    this.generateMonthOptions();
-  }
+  view: [number, number] = [500, 200];
 
-
-  // Options
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
   showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Categories';
+  showYAxisLabel = true;
+  yAxisLabel = 'Amount';
   showLabels = true;
   animations = true;
-  
+  colorScheme: any = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#FF8C00', '#FF4500', '#FF6347', '#FF1493']
+  };
+  chartWidth = 0;
+  chartHeight = 0;
+  isDoughnut: boolean = false;
+  showPopup: boolean = false;
+  @ViewChild('chartContainer') chartContainer!: ElementRef;
+  constructor() {
+    Object.assign(this, { single: this.single })
+    Object.assign(this, { pieChartData: this.pieChartData })
+    this.generateMonthOptions();
+  }
+  ngAfterViewInit() {
+    this.updateChartSize();
+    window.addEventListener('resize', () => this.updateChartSize());
+  }
+
+  updateChartSize() {
+    const container = this.chartContainer.nativeElement;
+    this.chartWidth = container.offsetWidth;
+    this.chartHeight = container.offsetHeight;
+  }
+
+  openDialog(currentData: any) {
+    this.dialog.open(ModelContentComponent, {
+      data:currentData,
+    }).afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   generateMonthOptions() {
-     const now = new Date();
+    const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
     const currentYear = now.getFullYear();
 
@@ -96,12 +161,14 @@ export class DashboardComponent {
   }
 
   onFilterChange(option: string) {
-     if (option !== 'Custom') {
+    if (option !== 'Custom') {
       this.customMonth = null;
     }
   }
 
-
+  onSelect(event: any) {
+    console.log(event);
+  }
 
   // Optional: prevent selecting future months
   disableFutureDates = (d: Date | null): boolean => {
@@ -118,5 +185,22 @@ export class DashboardComponent {
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
+
+  openPopup() {
+    this.dialog.open(StatusModalComponent).afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  closePopup() {
+    this.showPopup = false;
+  }
+
+  onSelectChartType(currentData: any) {
+    console.log('Chart type changed:', currentData);
+    this.openDialog(currentData);
+  }
+
+  openAddTransactionPopup() {}
 
 }

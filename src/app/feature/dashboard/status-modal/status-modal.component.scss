@@ -1,0 +1,14 @@
+.title {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    div {
+         width: 25px;
+        height: 25px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+    .surplus{
+        background-color: #16c60c;
+    }
+}
